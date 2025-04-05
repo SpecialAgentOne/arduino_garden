@@ -1,8 +1,8 @@
-#define sensorPin1 A0
-#define sensorPin2 A1
-#define sensorPin3 A2
-#define sensorPin4 A3
-#define RELAY_PIN 10 // In my case for Arduino Mega 2560, constant
+#define sensorPin1 A0 // Use this pin to connect sensor #1
+#define sensorPin2 A1 // Use this pin to connect sensor #2
+#define sensorPin3 A2 // Use this pin to connect sensor #3
+#define sensorPin4 A3 // Use this pin to connect sensor #4
+#define RELAY_PIN 10 // In my case for Arduino Mega 2560, constant!
 
 void setup() {
   // put your setup code here, to run once:
@@ -28,17 +28,24 @@ void loop() {
   // Wait for 1 second before the next reading
   delay(3000); // Can adjust for the needs
 
+  /* * * * * * * * * * * * IMPORTANT NOTE! * * * * * * * * * * * 
+
+  My project used a US Solid valve which normally opens without
+  any power, so be careful and rewrite your code if you use a 
+  different type of valve.
+
+  */
   if(value1 > 500 || value2 > 500 || value3 > 500 || value4 > 500) {
     Serial.println("The soil is DRY!");
-    Serial.println("*** PUMP ACTIVE ***");
-    digitalWrite(RELAY_PIN, HIGH);
+    Serial.println("*** VALVE OPEN ***");
+    digitalWrite(RELAY_PIN, LOW);
     delay(2000);
   } else {
     Serial.println("The soil is WET");
-    Serial.println("*** PUMP DEACTIVATED ***");
-    digitalWrite(RELAY_PIN, LOW);
+    Serial.println("*** VALVE CLOSED ***");
+    digitalWrite(RELAY_PIN, HIGH);
     delay(2000);
   }
 
-  delay(3000); // Delay timer
+  delay(2000); // Delay timer
 }
